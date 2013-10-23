@@ -1,4 +1,8 @@
 <?php
+
+	//check for this message and stop work if servers are overloaded
+	$errMsg = "Servers are under very heavy load or item draft is under progress.";
+
 	//get entry with highest id
 	$db = mysqli_connect( 'localhost', 'username', 'password', 'dbname' );
 	if ( !$db ) {
@@ -23,6 +27,10 @@
 
 	while ( get_response_header( $d2url . $next ) == '200' ){
 		$page = file_get_contents_curl($d2url.$next);
+
+		if (strpos($page, $errMsg) === false) {
+			break;
+		}
 
 		$doc = new DomDocument;
 		// We need to validate our document before refering to the id
@@ -56,6 +64,10 @@
 	if ( $result2 && mysqli_num_rows($result2) > 0 ) {
 		while ( $row = mysqli_fetch_assoc($result2) ) {
 			$page = file_get_contents_curl($d2url.$row['id']);
+
+			if (strpos($page, $errMsg) === false) {
+				break;
+			}
 
 			//update team names:
 			$doc = new DomDocument;
