@@ -28,7 +28,7 @@
 	while ( get_response_header( $d2url . $next ) == '200' ){
 		$page = file_get_contents_curl($d2url.$next);
 
-		if (strpos($page, $errMsg) === false) {
+		if (strpos($page, $errMsg) !== false) {
 			break;
 		}
 
@@ -65,7 +65,7 @@
 		while ( $row = mysqli_fetch_assoc($result2) ) {
 			$page = file_get_contents_curl($d2url.$row['id']);
 
-			if (strpos($page, $errMsg) === false) {
+			if (strpos($page, $errMsg) !== false) {
 				break;
 			}
 
