@@ -28,6 +28,10 @@
 	while ( get_response_header( $d2url . $next ) == '200' ){
 		$page = file_get_contents_curl($d2url.$next);
 
+		if (strlen($page) == 0) {
+			break;
+		}
+
 		if (strpos($page, $errMsg) !== false) {
 			break;
 		}
@@ -64,6 +68,10 @@
 	if ( $result2 && mysqli_num_rows($result2) > 0 ) {
 		while ( $row = mysqli_fetch_assoc($result2) ) {
 			$page = file_get_contents_curl($d2url.$row['id']);
+
+			if (strlen($page) == 0) {
+				break;
+			}
 
 			if (strpos($page, $errMsg) !== false) {
 				break;
