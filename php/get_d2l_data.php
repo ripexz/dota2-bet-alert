@@ -2,9 +2,10 @@
 
 	//check for this message and stop work if servers are overloaded
 	$errMsg = "Servers are under very heavy load or item draft is under progress.";
+	$nfMsg = "Looks like there's no site that you´re looking for.";
 
 	//get entry with highest id
-	$db = mysqli_connect( 'localhost', 'username', 'password', 'dbname' );
+	$db = mysqli_connect( 'localhost', 'ukdota', 'doublepenetration', 'dota2betalert' );
 	if ( !$db ) {
 		die();
 	}
@@ -24,16 +25,34 @@
 
 	$last = $next;
 	$d2url = 'http://dota2lounge.com/match?m=';
+	$prevWasNotFound = false;
 
-	while ( get_response_header( $d2url . $next ) == '200' ){
+	while ( page_found( $d2url . $next ) ){
 		$page = file_get_contents_curl($d2url.$next);
 
 		if (strlen($page) == 0) {
 			break;
 		}
-
 		if (strpos($page, $errMsg) !== false) {
 			break;
+		}
+
+		if (strpos($page, $nfMsg) !== false) {
+			// Page is not found, check one ahead to see if its a gap
+			// then stop if it happens again
+			if ($prevWasNotFound) {
+				// both previous and current match are 404s, break loop:
+				break;
+			}
+			else {
+				$prevWasNotFound = true;
+			}
+		}
+		else {
+			// Reset prevWasNotFound
+			if ($prevWasNotFound) {
+				$prevWasNotFound = false;
+			}
 		}
 
 		$doc = new DomDocument;
@@ -72,7 +91,6 @@
 			if (strlen($page) == 0) {
 				break;
 			}
-
 			if (strpos($page, $errMsg) !== false) {
 				break;
 			}
@@ -119,7 +137,7 @@
 		return $data;
 	}
 
-	function get_response_header($url) {
+	function page_found($url) {
 		$ch = curl_init(); 
 		curl_setopt($ch, CURLOPT_URL, $url); 
 		curl_setopt($ch, CURLOPT_HEADER, TRUE); 
@@ -127,6 +145,9 @@
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE); 
 		$head = curl_exec($ch); 
 		$httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-		return $httpCode;
+		if ($httpCode == '200') {
+			return true;
+		}		
+		return false;
 	}
 ?>
