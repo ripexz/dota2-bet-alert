@@ -5,7 +5,7 @@
 	$nfMsg = "Looks like there's no site that you´re looking for.";
 
 	//get entry with highest id
-	$db = mysqli_connect( 'localhost', 'ukdota', 'doublepenetration', 'dota2betalert' );
+	$db = mysqli_connect( 'localhost', 'username', 'password', 'dbname' );
 	if ( !$db ) {
 		die();
 	}
