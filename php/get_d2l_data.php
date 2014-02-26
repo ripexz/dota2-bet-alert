@@ -25,7 +25,7 @@
 
 	$last = $next;
 	$d2url = 'http://dota2lounge.com/match?m=';
-	$prevWasNotFound = false;
+	$notFoundCount = 0;
 
 	while ( page_found( $d2url . $next ) ){
 		$page = file_get_contents_curl($d2url.$next);
@@ -38,20 +38,20 @@
 		}
 
 		if (strpos($page, $nfMsg) !== false) {
-			// Page is not found, check one ahead to see if its a gap
-			// then stop if it happens again
-			if ($prevWasNotFound) {
-				// both previous and current match are 404s, break loop:
+			// Page is not found, check ahead to see if they've been deleted
+			// then stop if it happens 5 times in a row
+			if ($notFoundCount >= 4) {
+				// five 404s in a row, break loop:
 				break;
 			}
 			else {
-				$prevWasNotFound = true;
+				$notFoundCount += 1;
 			}
 		}
 		else {
-			// Reset prevWasNotFound
-			if ($prevWasNotFound) {
-				$prevWasNotFound = false;
+			// Reset notFoundCount
+			if ($notFoundCount > 0) {
+				$notFoundCount = 0;
 			}
 		}
 
