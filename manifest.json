@@ -3,7 +3,7 @@
 
 	"name": "Dota 2 Bet Alert",
 	"description": "Dota 2 Bet Alert lists any active games on Dota 2 Lounge so that you never miss the chance to lose your rares!",
-	"version": "1.3.2",
+	"version": "1.3.3",
 
 	"icons": {
 		"16": "icon16.png",

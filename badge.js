@@ -15,7 +15,7 @@ function addAlarm() {
 		if (typeof alarm == "undefined") {
 			chrome.alarms.create("dota2betalert", {
 				when: Date.now(),
-				periodInMinutes: 2.0
+				periodInMinutes: 5.0
 			});
 		}
 	});
