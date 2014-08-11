@@ -1,6 +1,6 @@
 var d2betalert = {
 
-	reqUrl: 'http://www.ripexz.com/dota2betalert/get_json.php',
+	reqUrl: 'http://eyeur.com/dota2/get_json.php',
 
 	getData: function() {
 		var req = new XMLHttpRequest();
