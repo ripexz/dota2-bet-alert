@@ -1,6 +1,6 @@
 {
   "name": "dota2-bet-alert",
-  "version": "1.3.4",
+  "version": "1.4.0",
   "description": "A Chrome extension to keep track of active Dota 2 Lounge matches.",
   "main": "popup.js",
   "scripts": {
@@ -24,6 +24,7 @@
   "homepage": "https://github.com/ripexz/dota2-bet-alert",
   "devDependencies": {
     "gulp": "^3.8.7",
+    "gulp-imagemin": "^1.0.1",
     "gulp-load-plugins": "^0.5.3",
     "gulp-uglify": "^0.3.1"
   }
