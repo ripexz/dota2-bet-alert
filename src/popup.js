@@ -4,11 +4,11 @@ var d2betalert = {
 
 	getData: function() {
 		chrome.storage.local.get('dota2matches', function(matchObj){
-			if (matchObj.valid) {
-
+			if (matchObj.dota2matches && matchObj.dota2matches.valid) {
+				d2betalert.renderMatches(matchObj.dota2matches);
 			}
 			else {
-				this.getDataViaAjax();
+				d2betalert.getDataViaAjax();
 			}
 		});
 	},
@@ -21,12 +21,14 @@ var d2betalert = {
 	},
 
 	renderMatches: function(data) {
-		var matchObj;
+		var matchObj, countStr;
 		if (data.valid) {
 			matchObj = data;
 		}
 		else {
 			matchObj = JSON.parse(data.target.responseText);
+			matchObj.valid = true;
+			chrome.storage.local.set({'dota2matches': matchObj});
 		}
 
 		if (matchObj.matches && matchObj.matches.length > 0) {
@@ -36,16 +38,16 @@ var d2betalert = {
 				p.innerHTML = '<span class="t1">'+matchObj.matches[i].team1+'</span><span class="vs">vs</span><span class="t2">'+matchObj.matches[i].team2+'</span>';
 				document.getElementById('match_list').appendChild(p);
 			}
-			var str_num = i + '';
+			countStr = i + '';
 			this.applyBindings();
 		}
 		else {
 			var p = document.createElement('p');
 			p.innerHTML = 'No active matches found.';
 			document.getElementById('match_list').appendChild(p);
-			var str_num ='0';
+			countStr = '0';
 		}
-		chrome.browserAction.setBadgeText({text:str_num});
+		chrome.browserAction.setBadgeText({text: countStr});
 	},
 
 	applyBindings: function() {
