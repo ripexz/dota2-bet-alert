@@ -1,5 +1,16 @@
 <?php
 
+	header('Content-Type: application/json');
+
+	$memcached = new Memcached();
+	$memcached->addServer('localhost', 11211);
+
+	$mdata = $memcached->get("dota2_match_data");
+	if ($mdata) {
+		echo $mdata;
+		exit();
+	}
+
 	$db = mysqli_connect( 'localhost', 'username', 'password', 'dbname' );
 	if ( !$db ) {
 		die();
@@ -24,6 +35,7 @@
 	} 
 
 	$json .= "]}";
+	$memcached->set("dota2_match_data", $json);
 	echo $json;
 
 ?>
