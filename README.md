@@ -14,3 +14,7 @@ Add to Chrome: https://chrome.google.com/webstore/detail/dota-2-bet-alert/ihdnin
 
 ### Build
 - `gulp build` or just `gulp`
+
+### Deploy
+1. Build
+2. `gulp deploy` to create the ZIP file

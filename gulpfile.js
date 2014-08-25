@@ -23,7 +23,13 @@ gulp.task('images', function() {
 	gulp.src(paths.src + '/images/**')
 		.pipe($.imagemin())
 		.pipe(gulp.dest(paths.build));
-})
+});
+
+gulp.task('deploy', function(){
+	gulp.src(paths.build + '/**')
+		.pipe($.zip('dota2betalert.zip'))
+		.pipe(gulp.dest('./'));
+});
 
 gulp.task('build', ['manifest', 'scripts', 'markup', 'images']);
 gulp.task('default', ['build']);
